@@ -1,5 +1,5 @@
 const { Router } = require("express");
-const { body, param } = require("express-validator");
+const { body, param, query } = require("express-validator");
 const shipmentController = require("../controllers/shipment.controller");
 const { protect } = require("../middleware/auth.middleware");
 const { validate } = require("../middleware/validate.middleware");
@@ -12,7 +12,15 @@ const shipmentNumberParam = param("shipmentNumber")
   .matches(/^DTLC[0-9]+$/)
   .withMessage("Invalid shipment number format");
 
-router.get("/", protect, shipmentController.list);
+router.get(
+  "/",
+  protect,
+  [
+    query("status").optional().isIn(SHIPMENT_STATUSES).withMessage("Invalid status value"),
+    validate,
+  ],
+  shipmentController.list
+);
 
 router.patch(
   "/:shipmentNumber/status",

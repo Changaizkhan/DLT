@@ -133,8 +133,9 @@ function assertValidShipmentNumber(shipmentNumber) {
   }
 }
 
-async function listShipments() {
-  const rows = await Shipment.find().sort({ createdAt: -1 }).lean();
+async function listShipments({ status } = {}) {
+  const filter = status ? { status } : {};
+  const rows = await Shipment.find(filter).sort({ createdAt: -1 }).lean();
   return rows.map(withDefaultStatus);
 }
 

@@ -7,7 +7,8 @@ const create = catchAsync(async (req, res) => {
 });
 
 const list = catchAsync(async (req, res) => {
-  const data = await shipmentService.listShipments();
+  const status = req.query.status;
+  const data = await shipmentService.listShipments({ status });
   return res.json({ message: "success", count: data.length, data });
 });
 
