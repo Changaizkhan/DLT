@@ -1,8 +1,22 @@
 const { catchAsync } = require("../utils/catchAsync");
 const shipmentService = require("../services/shipment.service");
+const emailService = require("../services/email.service");
+
+function fireAndForget(promise) {
+  promise.catch(() => {});
+}
 
 const create = catchAsync(async (req, res) => {
   const data = await shipmentService.createShipmentWithPackages(req.body);
+  fireAndForget(
+    emailService.sendShipmentCreatedEmail({
+      receiverEmail: data.receiverEmail,
+      receiverName: data.receiverName,
+      trackingId: data.shipmentNumber,
+      status: data.status,
+      timestamp: data.createdAt || new Date(),
+    })
+  );
   return res.status(201).json({ message: "Shipment created", data });
 });
 
@@ -19,6 +33,15 @@ const getByShipmentNumber = catchAsync(async (req, res) => {
 
 const updateStatus = catchAsync(async (req, res) => {
   const data = await shipmentService.updateShipmentStatus(req.params.shipmentNumber, req.body.status);
+  fireAndForget(
+    emailService.sendStatusUpdatedEmail({
+      receiverEmail: data.receiverEmail,
+      receiverName: data.receiverName,
+      trackingId: data.shipmentNumber,
+      status: data.status,
+      timestamp: data.updatedAt || new Date(),
+    })
+  );
   return res.json({ message: "Status updated", data });
 });
 

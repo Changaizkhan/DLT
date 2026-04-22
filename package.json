@@ -11,8 +11,9 @@
     "node": ">=18"
   },
   "dependencies": {
-    "cors": "^2.8.5",
+    "@sendgrid/mail": "^8.1.6",
     "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "express-validator": "^7.2.0",

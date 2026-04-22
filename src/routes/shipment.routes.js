@@ -42,7 +42,7 @@ router.put(
 
 router.delete("/:shipmentNumber", protect, [shipmentNumberParam, validate], shipmentController.remove);
 
-router.get("/:shipmentNumber", protect, shipmentController.getByShipmentNumber);
+router.get("/:shipmentNumber", shipmentController.getByShipmentNumber);
 
 router.post(
   "/",
