@@ -5,7 +5,7 @@ const { connectDatabase } = require("./config/database");
 async function start() {
   try {
     await connectDatabase();
-    app.listen(env.port, () => {
+    app.listen(env.port, "0.0.0.0", () => {
       console.log(`Server listening on port ${env.port}`);
     });
   } catch (err) {
