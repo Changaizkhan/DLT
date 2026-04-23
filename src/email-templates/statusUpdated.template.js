@@ -1,5 +1,5 @@
 function statusUpdatedTemplate({ receiverName, trackingId, status, timestamp }) {
-  const formattedTime = new Date(timestamp).toISOString();
+  const formattedDate = new Date(timestamp).toISOString().split("T")[0];
   const normalizedStatus = String(status || "").toLowerCase();
   const sentenceStatus = normalizedStatus || "updated";
   const sentence =
@@ -16,7 +16,7 @@ function statusUpdatedTemplate({ receiverName, trackingId, status, timestamp }) 
       sentence,
       "",
       `Tracking ID: ${trackingId}`,
-      `Updated At: ${formattedTime}`,
+      `Updated On: ${formattedDate}`,
       "",
       "For any assistance, please contact DTLC Logistics Support.",
       "",
@@ -27,7 +27,7 @@ function statusUpdatedTemplate({ receiverName, trackingId, status, timestamp }) 
       <p>Dear ${receiverName},</p>
       <p>This is an official update regarding your shipment.</p>
       <p>${sentence.replace(trackingId, `<strong>${trackingId}</strong>`)}</p>
-      <p><strong>Tracking ID:</strong> ${trackingId}<br/><strong>Updated At:</strong> ${formattedTime}</p>
+      <p><strong>Tracking ID:</strong> ${trackingId}<br/><strong>Updated On:</strong> ${formattedDate}</p>
       <p>For any assistance, please contact DTLC Logistics Support.</p>
       <p>Regards,<br/>DTLC Logistics Support</p>
     </div>`,

@@ -1,5 +1,5 @@
 function shipmentCreatedTemplate({ receiverName, trackingId, status, timestamp }) {
-  const formattedTime = new Date(timestamp).toISOString();
+  const formattedDate = new Date(timestamp).toISOString().split("T")[0];
   return {
     subject: `Shipment Booked - ${trackingId}`,
     text: [
@@ -9,7 +9,7 @@ function shipmentCreatedTemplate({ receiverName, trackingId, status, timestamp }
       `Your shipment has been booked successfully and is now registered under tracking ID ${trackingId}.`,
       "",
       `Current Status: ${status}`,
-      `Booked At: ${formattedTime}`,
+      `Booked On: ${formattedDate}`,
       "",
       "Please keep this tracking ID for future shipment inquiries.",
       "",
@@ -20,7 +20,7 @@ function shipmentCreatedTemplate({ receiverName, trackingId, status, timestamp }
       <p>Dear ${receiverName},</p>
       <p>Thank you for choosing <strong>DTLC Logistics</strong>.</p>
       <p>Your shipment has been booked successfully and is now registered under tracking ID <strong>${trackingId}</strong>.</p>
-      <p><strong>Current Status:</strong> ${status}<br/><strong>Booked At:</strong> ${formattedTime}</p>
+      <p><strong>Current Status:</strong> ${status}<br/><strong>Booked On:</strong> ${formattedDate}</p>
       <p>Please keep this tracking ID for future shipment inquiries.</p>
       <p>Regards,<br/>DTLC Logistics Support</p>
     </div>`,
