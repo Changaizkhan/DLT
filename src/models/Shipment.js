@@ -9,6 +9,7 @@ const shipmentSchema = new mongoose.Schema(
       enum: SHIPMENT_STATUSES,
       default: DEFAULT_SHIPMENT_STATUS,
     },
+    currentLocation: { type: String, trim: true },
     shipperName: { type: String, required: true, trim: true },
     shipperPhone: { type: String, required: true, trim: true },
     shipperAddress: { type: String, required: true, trim: true },

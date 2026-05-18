@@ -33,6 +33,17 @@ router.patch(
   shipmentController.updateStatus
 );
 
+router.patch(
+  "/:shipmentNumber/current-location",
+  protect,
+  [
+    shipmentNumberParam,
+    body("currentLocation").trim().notEmpty().withMessage("currentLocation is required"),
+    validate,
+  ],
+  shipmentController.updateCurrentLocation
+);
+
 router.put(
   "/:shipmentNumber",
   protect,

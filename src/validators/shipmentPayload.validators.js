@@ -40,6 +40,7 @@ const shipmentCreateUpdateBodyRules = [
   body("details.pickupTime").trim().notEmpty(),
   body("details.expectedDeliveryDate").isISO8601().toDate(),
   body("details.comments").optional().trim(),
+  body("details.currentLocation").optional().trim(),
   body("packages").isArray({ min: 1 }),
   body("packages.*.quantity").isInt({ min: 1 }),
   body("packages.*.pieceType").trim().notEmpty(),

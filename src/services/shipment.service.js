@@ -54,6 +54,7 @@ function buildShipmentDataFromBody(body, totals) {
     pickupTime: details.pickupTime,
     expectedDeliveryDate: new Date(details.expectedDeliveryDate),
     comments: details.comments || "",
+    currentLocation: details.currentLocation || "",
     totalVolumetricWeightKg: totals.totalVolumetricWeightKg,
     totalVolumeCubicM: totals.totalVolumeCubicM,
     totalActualWeightKg: totals.totalActualWeightKg,
@@ -173,6 +174,26 @@ async function updateShipmentStatus(shipmentNumber, status) {
   return withDefaultStatus(updated);
 }
 
+async function updateShipmentCurrentLocation(shipmentNumber, currentLocation) {
+  assertValidShipmentNumber(shipmentNumber);
+  const updated = await Shipment.findOneAndUpdate(
+    { shipmentNumber },
+    { currentLocation },
+    { new: true, runValidators: true }
+  )
+    .populate("packages")
+    .lean();
+  if (!updated) {
+    const err = new Error("Shipment not found");
+    err.statusCode = 404;
+    throw err;
+  }
+  if (updated.packages?.length) {
+    updated.packages.sort((a, b) => a.lineNumber - b.lineNumber);
+  }
+  return withDefaultStatus(updated);
+}
+
 async function updateShipmentWithPackages(shipmentNumber, body) {
   assertValidShipmentNumber(shipmentNumber);
   const { packages, details } = body;
@@ -243,6 +264,7 @@ module.exports = {
   listShipments,
   getShipmentByShipmentNumber,
   updateShipmentStatus,
+  updateShipmentCurrentLocation,
   updateShipmentWithPackages,
   deleteShipment,
 };
